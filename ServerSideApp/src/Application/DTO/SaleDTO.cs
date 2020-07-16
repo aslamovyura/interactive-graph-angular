@@ -1,4 +1,5 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 
 namespace ServerSideApp.Application.DTO
 {
@@ -15,11 +16,13 @@ namespace ServerSideApp.Application.DTO
         /// <summary>
         /// Sale date.
         /// </summary>
+        [Required]
         public DateTime Date { get; set; }
 
         /// <summary>
         /// Sale amount, $.
         /// </summary>
+        [Required]
         public double Amount { get; set; }
     }
 }
