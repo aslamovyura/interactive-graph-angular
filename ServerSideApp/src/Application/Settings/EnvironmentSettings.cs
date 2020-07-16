@@ -6,7 +6,7 @@
     public class EnvironmentSettings
     {
         /// <summary>
-        /// Environmetn settings. "true" - use docker container, "false" - use IIS Express.
+        /// Environment settings. "true" - use docker container, "false" - use IIS Express.
         /// </summary>
         public bool IsDockerSupport { get; set; }
     }
