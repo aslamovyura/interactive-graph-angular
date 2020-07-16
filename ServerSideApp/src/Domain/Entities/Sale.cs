@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Domain.Entities
+namespace ServerSideApp.Domain.Entities
 {
     /// <summary>
     /// Single sale entity.

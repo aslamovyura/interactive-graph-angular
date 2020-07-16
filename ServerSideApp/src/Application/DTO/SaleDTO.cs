@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 
-namespace Application.DTO
+namespace ServerSideApp.Application.DTO
 {
     /// <summary>
     /// Define data transfer object (DTO) of Sale entity.

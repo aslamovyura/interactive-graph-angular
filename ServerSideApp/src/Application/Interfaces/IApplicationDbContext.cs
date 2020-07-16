@@ -1,11 +1,14 @@
-﻿using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
+using ServerSideApp.Domain.Entities;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Application.Interfaces
+namespace ServerSideApp.Application.Interfaces
 {
-    interface IApplicationDbContext
+    /// <summary>
+    /// Define interface for application DB context.
+    /// </summary>
+    public interface IApplicationDbContext
     {
         /// <summary>
         /// Sales.
@@ -17,6 +20,6 @@ namespace Application.Interfaces
         /// </summary>
         /// <param name="cancellationToken">Cancellation token.</param>
         /// <returns>Operation result.</returns>
-        Task<int> SaveChangesAsync(CancellationToken cancellationToken = new CancellationToken());
+        Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }

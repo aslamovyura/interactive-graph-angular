@@ -4,8 +4,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using ServerSideApp.Infrastructure;
 
-namespace Web
+namespace ServerSideApp.Web
 {
     public class Startup
     {
@@ -18,8 +19,9 @@ namespace Web
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
             services.AddApplicationServices();
+            services.AddInfrastructureServices();
+            services.AddWebServices(Configuration);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -35,6 +37,7 @@ namespace Web
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+                endpoints.MapHealthChecks("/hc");
             });
         }
     }

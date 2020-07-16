@@ -1,8 +1,8 @@
-﻿using Application.DTO;
-using AutoMapper;
-using Domain.Entities;
+﻿using AutoMapper;
+using ServerSideApp.Application.DTO;
+using ServerSideApp.Domain.Entities;
 
-namespace Application.Mapping
+namespace ServerSideApp.Application.Mapping
 {
     /// <summary>
     /// Define mapping profile for Sale entity & Sale DTO.
