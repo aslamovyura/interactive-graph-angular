@@ -10,18 +10,21 @@ namespace ServerSideApp.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+
+        public IHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices();
             services.AddInfrastructureServices();
-            services.AddWebServices(Configuration);
+            services.AddWebServices(Configuration, Environment);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -32,6 +35,14 @@ namespace ServerSideApp.Web
             }
 
             app.UseRouting();
+
+            app.UseCors(options => options.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod());
+
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sales API version 1"));
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

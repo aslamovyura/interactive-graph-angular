@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using ServerSideApp.Application.Interfaces;
 using ServerSideApp.Infrastructure.Persistence;
 
@@ -16,17 +17,23 @@ namespace ServerSideApp.Web
         /// </summary>
         /// <param name="services">DI container.</param>
         /// <param name="configuration">Application configuration.</param>
+        /// <param name="environment">Web hosting environment.</param>
         /// <returns>Services of Web layer.</returns>
-        public static IServiceCollection AddWebServices(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddWebServices(this IServiceCollection services,
+                                                        IConfiguration configuration, 
+                                                        IHostEnvironment environment)
         {
-            services.AddDbContext<ApplicationDbContext>(options =>
-                options.UseSqlServer(configuration.GetConnectionString("DefaultConnection"),
-                    x => x.MigrationsAssembly("Infrastructure")));
 
+            var conntectionType = environment.IsProduction() ? "DockerConnection" : "DefaultConnection";
+
+            var connectionString = configuration.GetConnectionString(conntectionType);
+            services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
+
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddControllers();
 
             services.AddHealthChecks();
-            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddCors();
 
             return services;
         }

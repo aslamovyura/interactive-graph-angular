@@ -8,6 +8,8 @@ using ServerSideApp.Application.CQRS.Commans.Delete;
 using ServerSideApp.Application.CQRS.Commans.Update;
 using ServerSideApp.Application.CQRS.Queries.Get;
 using ServerSideApp.Application.DTO;
+using ServerSideApp.Application.Enums;
+using ServerSideApp.Application.Interfaces;
 using ServerSideApp.Web.Controllers;
 using System;
 using System.Collections.Generic;
@@ -29,8 +31,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(GetSales()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
 
             // Act
             var result = controller.GetSales().GetAwaiter().GetResult();
@@ -49,8 +52,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(GetSales()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             controller.ModelState.AddModelError("Id", "InvalidId");
 
             var id = 1;
@@ -72,8 +76,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(GetSale()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var id = 1;
 
             // Act
@@ -94,8 +99,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(GetNullSale()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var id = 99;
 
             // Act
@@ -111,8 +117,9 @@ namespace UnitTests.Controllers
             // Arrange
             var mediatorMock = new Mock<IMediator>();
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
 
             controller.ModelState.AddModelError("Error", "Model Error");
             var saleDTO = new SaleDTO();
@@ -134,8 +141,9 @@ namespace UnitTests.Controllers
                 .Throws(new Exception());
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var saleDTO = new SaleDTO();
 
             // Act
@@ -155,8 +163,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(It.IsAny<int>()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var saleDTO = new SaleDTO();
 
             // Act
@@ -173,8 +182,9 @@ namespace UnitTests.Controllers
             // Arrange
             var mediatorMock = new Mock<IMediator>();
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
 
             controller.ModelState.AddModelError("Error", "Model Error");
             var saleDTO = new SaleDTO();
@@ -192,8 +202,9 @@ namespace UnitTests.Controllers
             // Arrange
             var mediatorMock = new Mock<IMediator>();
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
 
             controller.ModelState.AddModelError("Error", "Model Error");
             var saleDTO = new SaleDTO { Id = -99 };
@@ -215,8 +226,9 @@ namespace UnitTests.Controllers
                 .Throws(new Exception());
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var saleDTO = new SaleDTO { Id = 99 };
 
             // Act
@@ -236,8 +248,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(It.IsAny<Unit>()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var saleDTO = new SaleDTO { Id = 1 };
 
             // Act
@@ -258,8 +271,9 @@ namespace UnitTests.Controllers
                 .Throws(new Exception());
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var id = -99;
 
             // Act
@@ -280,8 +294,9 @@ namespace UnitTests.Controllers
                 .Returns(Task.FromResult(It.IsAny<Unit>()));
 
             var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
 
-            var controller = new SalesController(loggerMock.Object, mediatorMock.Object);
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
             var id = 1;
 
             // Act
@@ -290,6 +305,72 @@ namespace UnitTests.Controllers
             // Assert
             var okObjectResult = Assert.IsType<OkObjectResult>(result);
             Assert.IsAssignableFrom<int>(okObjectResult.Value);
+        }
+
+        [Fact]
+        public void GetSalesStatistic_WithMissingQueryParameter_Returns_BadRequestResult()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
+
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
+            var scale = TimeUnit.Quarter;
+            var startDate = DateTime.Parse("2019-01-01");
+
+            // Act
+            var result = controller.GetSalesStatistic(scale, startDate, null).GetAwaiter().GetResult();
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsAssignableFrom<string>(badRequestObjectResult.Value);
+        }
+
+        [Fact]
+        public void GetSalesStatistic_WithIncorrectEndDateParameter_Returns_BadRequestResult()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            var loggerMock = new Mock<ILogger<SalesController>>();
+            var salesServiceMock = new Mock<ISaleStatisticService>();
+
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
+            var scale = TimeUnit.Quarter;
+            var startDate = DateTime.Parse("2019-01-01");
+            var endDate = DateTime.Parse("2018-01-01");
+
+            // Act
+            var result = controller.GetSalesStatistic(scale, startDate, endDate).GetAwaiter().GetResult();
+
+            // Assert
+            var badRequestObjectResult = Assert.IsType<BadRequestObjectResult>(result);
+            Assert.IsAssignableFrom<string>(badRequestObjectResult.Value);
+        }
+
+        [Fact]
+        public void GetSalesStatistic_WithValidQuery_Returns_OkResult()
+        {
+            // Arrange
+            var mediatorMock = new Mock<IMediator>();
+            var loggerMock = new Mock<ILogger<SalesController>>();
+
+            var salesServiceMock = new Mock<ISaleStatisticService>();
+            salesServiceMock.Setup(service => service
+                .GetSalesStatistic(It.IsAny<TimeUnit>(), It.IsAny<DateTime>(), It.IsAny<DateTime>()))
+                .Returns(Task.FromResult(GetSaleStatistic()));
+
+            var controller = new SalesController(loggerMock.Object, mediatorMock.Object, salesServiceMock.Object);
+            var scale = TimeUnit.Quarter;
+            var startDate = DateTime.Parse("2019-01-01");
+            var endDate = DateTime.Parse("2020-01-01");
+
+            // Act
+            var result = controller.GetSalesStatistic(scale, startDate, endDate).GetAwaiter().GetResult();
+
+            // Assert
+            var okObjectResult = Assert.IsType<OkObjectResult>(result);
+            Assert.IsAssignableFrom<SaleStatisticDTO>(okObjectResult.Value);
         }
     }
 }

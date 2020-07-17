@@ -29,7 +29,7 @@ namespace ServerSideApp.Infrastructure.Persistence
             var sale1Exist = context.Sales.FirstOrDefault(s => s.Date == sale1.Date && s.Amount == sale1.Amount);
             if (sale1Exist == null)
             {
-                context.Sales.Add(sale1);
+                await context.Sales.AddAsync(sale1);
             }
 
             // Add second test sale.
@@ -42,7 +42,7 @@ namespace ServerSideApp.Infrastructure.Persistence
             var sale2Exist = context.Sales.FirstOrDefault(s => s.Date == sale2.Date && s.Amount == sale2.Amount);
             if (sale2Exist == null)
             {
-                context.Sales.Add(sale2);
+                await context.Sales.AddAsync(sale2);
             }
 
             await context.SaveChangesAsync();
