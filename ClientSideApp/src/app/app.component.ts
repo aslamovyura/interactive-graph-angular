@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
      
 @Component({
-    selector: 'icare-app',
+    selector: 'graph-app',
     templateUrl: './app.component.html',
     styleUrls: ['../styles.css']
 })

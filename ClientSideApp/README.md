@@ -17,4 +17,4 @@ To install required packages and run application, type the following command fro
 
 ## License
 
-This project is under the MIT License - see the [LICENSE.md](https://github.com/aslamovyura/iCare-single-page-app/blob/master/LICENSE) file for details.
+This project is under the MIT License - see the [LICENSE.md](https://github.com/aslamovyura/interactive-graph-angular/blob/master/LICENSE) file for details.
