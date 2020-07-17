@@ -2,11 +2,15 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Serialization;
 using ServerSideApp.Application.CQRS.Commans.Create;
 using ServerSideApp.Application.CQRS.Commans.Delete;
 using ServerSideApp.Application.CQRS.Commans.Update;
 using ServerSideApp.Application.CQRS.Queries.Get;
 using ServerSideApp.Application.DTO;
+using ServerSideApp.Application.Enums;
+using ServerSideApp.Application.Interfaces;
+using ServerSideApp.Domain.Entities;
 using ServerSideApp.Web.Constants;
 using System;
 using System.Collections.Generic;
@@ -21,16 +25,21 @@ namespace ServerSideApp.Web.Controllers
     {
         private readonly ILogger<SalesController> _logger;
         private readonly IMediator _mediator;
+        private readonly ISaleStatisticService _saleStatisticService;
 
         /// <summary>
         /// Create controller to manage sales API.
         /// </summary>
         /// <param name="logger">Logger service.</param>
         /// <param name="mediator">Mediator service.</param>
-        public SalesController(ILogger<SalesController> logger, IMediator mediator)
+        /// <param name="saleStatisticService">Service to calculate sales statistic.</param>
+        public SalesController(ILogger<SalesController> logger,
+                                IMediator mediator,
+                                ISaleStatisticService saleStatisticService)
         {
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
             _mediator = mediator ?? throw new ArgumentNullException(nameof(mediator));
+            _saleStatisticService = saleStatisticService ?? throw new ArgumentNullException(nameof(saleStatisticService));
         }
 
         // GET: api/sales
@@ -147,6 +156,25 @@ namespace ServerSideApp.Web.Controllers
 
             _logger.LogInformation($"{id} {SalesConstants.DELETE_SALE_SUCCESS}");
             return Ok(id);
+        }
+
+        // GET: api/sales/statistic?scale=0&startdate=2019-11-01&enddate=2020-02-01
+        [HttpGet("statistic")]
+        public async Task<IActionResult> GetSalesStatistic([FromQuery] TimeUnit? scale, [FromQuery] DateTime? startDate, [FromQuery] DateTime? endDate)
+        {
+            if (scale == null || !startDate.HasValue || !endDate.HasValue)
+            {
+                return BadRequest("Missing one or more request parameters!");
+            }
+
+            if (startDate.Value >= endDate.Value)
+            {
+                return BadRequest("Parameter 'endDate' must be greater than 'startDate'!");
+            }
+
+            var sales = await _saleStatisticService.GetSalesStatistic(scale.Value, startDate.Value, endDate.Value);
+
+            return Ok(sales);
         }
     }
 }

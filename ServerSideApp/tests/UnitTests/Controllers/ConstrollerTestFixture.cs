@@ -52,5 +52,21 @@ namespace UnitTests.Controllers
         /// </summary>
         /// <returns>Null object.</returns>
         public SaleDTO GetNullSale() => null;
+
+        /// <summary>
+        /// Generate single SaleStatisticDTO.
+        /// </summary>
+        /// <returns>SaleStatisticDTO</returns>
+        public SaleStatisticDTO GetSaleStatistic()
+        {
+            return new SaleStatisticDTO
+            {
+                StartDate = DateTime.Parse("2019-01-01"),
+                EndDate = DateTime.Parse("2020-01-01"),
+                SalesDate = new List<DateTime> { DateTime.Parse("2019-01-01"), DateTime.Parse("2019-04-01"), DateTime.Parse("2019-07-01"), DateTime.Parse("2019-10-01") },
+                SalesNumber = new List<int> { 1, 2, 3, 4 },
+                SalesSum = new List<double> { 1000, 2000, 3000, 4000 },
+            };
+        }
     }
 }
