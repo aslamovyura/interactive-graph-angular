@@ -10,18 +10,21 @@ namespace ServerSideApp.Web
 {
     public class Startup
     {
-        public Startup(IConfiguration configuration)
+        public IConfiguration Configuration { get; }
+
+        public IHostEnvironment Environment { get; }
+
+        public Startup(IConfiguration configuration, IHostEnvironment environment)
         {
             Configuration = configuration;
+            Environment = environment;
         }
-
-        public IConfiguration Configuration { get; }
 
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddApplicationServices();
             services.AddInfrastructureServices();
-            services.AddWebServices(Configuration);
+            services.AddWebServices(Configuration, Environment);
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

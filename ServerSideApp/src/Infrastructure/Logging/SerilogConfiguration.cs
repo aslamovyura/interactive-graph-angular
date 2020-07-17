@@ -1,10 +1,10 @@
 ﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Core;
 using Serilog.Events;
 using Serilog.Sinks.MSSqlServer.Sinks.MSSqlServer.Options;
-using ServerSideApp.Application.Settings;
-using ServerSideApp.Infrastructure.Extensions;
+using System;
 
 namespace ServerSideApp.Infrastructure.Logging
 {
@@ -19,15 +19,15 @@ namespace ServerSideApp.Infrastructure.Logging
         /// <returns>Serilog configuration.</returns>
         public static Logger LoggerConfig()
         {
+            var environment = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var isProduction = environment == Environments.Production;
+
             var configuration = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var dockerSettingSection = configuration.GetSection("EnvironmentSettings");
-            var dockerSettings = dockerSettingSection.Get<EnvironmentSettings>();
-            var isDockerSupport = dockerSettings.IsDockerSupport;
-
-            var connectionString = configuration.GetConnectionString(isDockerSupport.ToDbConnectionString());
+            var connectionType = isProduction ? "DockerConnection" : "DefaultConnection";
+            var connectionString = configuration[$"ConnectionStrings:{connectionType}"];
 
             var serilogConfig =
                 new LoggerConfiguration()
