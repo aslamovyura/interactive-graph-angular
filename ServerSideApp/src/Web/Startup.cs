@@ -35,6 +35,11 @@ namespace ServerSideApp.Web
             }
 
             app.UseRouting();
+
+            app.UseCors(options => options.AllowAnyOrigin()
+                  .AllowAnyHeader()
+                  .AllowAnyMethod());
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

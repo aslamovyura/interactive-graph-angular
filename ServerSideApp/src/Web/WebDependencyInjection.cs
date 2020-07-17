@@ -29,10 +29,11 @@ namespace ServerSideApp.Web
             var connectionString = configuration.GetConnectionString(conntectionType);
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
+            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddControllers();
 
             services.AddHealthChecks();
-            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
+            services.AddCors();
 
             return services;
         }
