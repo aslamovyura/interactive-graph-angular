@@ -1,17 +1,13 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
-using Serilog;
 using ServerSideApp.Application.CQRS.Queries.Get;
 using ServerSideApp.Application.DTO;
 using ServerSideApp.Application.Enums;
 using ServerSideApp.Application.Interfaces;
-using ServerSideApp.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Security.Cryptography.X509Certificates;
 using System.Threading.Tasks;
 
 namespace ServerSideApp.Infrastructure.Services

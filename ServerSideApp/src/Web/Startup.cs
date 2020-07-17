@@ -40,6 +40,9 @@ namespace ServerSideApp.Web
                   .AllowAnyHeader()
                   .AllowAnyMethod());
 
+            app.UseSwagger();
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Sales API version 1"));
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
