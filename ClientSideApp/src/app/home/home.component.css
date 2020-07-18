@@ -1,0 +1,28 @@
+.chart-container {
+    padding: 0px;
+    width: 1000px;
+    color: rgba(45, 94, 185, 0.2);
+    /* background-color: red; */
+}
+
+.controls-container {
+    display: block;
+    text-align: start;
+}
+
+.control-item {
+    display: inline-block;
+    width: auto;
+    padding: 10px 2px 0 2px;
+    font-size: 14px;
+    /* border: 1px solid blue; */
+    /* background-color: yellow; */
+}
+
+.text-input {
+    padding: 0 5px;
+}
+
+label {
+    padding: 10px 5px;
+}

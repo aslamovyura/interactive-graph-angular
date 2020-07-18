@@ -6,10 +6,12 @@ import { routing }   from './app.routing';
 import { AlertComponent } from './_components/alert.component';
 import { NavComponent, FooterComponent, NotFoundComponent } from './_components';
 import { HomeComponent } from './home/';
+import { ChartsModule } from 'ng2-charts';
 
 @NgModule({
     imports: [
         BrowserModule,
+        ChartsModule,
         routing
     ],
     declarations: [
