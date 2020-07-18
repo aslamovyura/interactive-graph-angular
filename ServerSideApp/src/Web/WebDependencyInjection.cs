@@ -32,8 +32,8 @@ namespace ServerSideApp.Web
             services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
             services.AddControllers();
 
-            services.AddHealthChecks();
             services.AddCors();
+            services.AddHealthChecks();
 
             return services;
         }
