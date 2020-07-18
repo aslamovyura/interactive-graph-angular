@@ -1,8 +1,8 @@
 <div>
-    <div class="controls-container">
+    <form [formGroup]="controlsForm" class="controls-container">
         <div class="control-item">
-            <label>Time Period:</label>
-            <select name="scale-select">
+            <label for="scale">First Name</label>
+            <select formControlName="scale" (change)="inputChange()" [(ngModel)]="scale">
                 <option value="0">Quarter</option>
                 <option value="1">Month</option>
                 <option value="2">Week</option>
@@ -10,18 +10,23 @@
             </select>
         </div>
         <div class="control-item">
-            <label>Start Date:</label>
-            <input class="text-input" type="text" placeholder="01/09/2009">
+            <label for="startDate">Start Date</label>
+            <input type="date" formControlName="startDate" (input)="inputChange()" [(ngModel)]="startDate" />
+            <div *ngIf=" f.startDate.errors " class="invalid-feedback ">
+                <div *ngIf="f.startDate.errors.required ">Start Date is required</div>
+            </div>
         </div>
         <div class="control-item">
-            <label>End Date:</label>
-            <input class="text-input" type="text" placeholder="09/16/2014">
+            <label for="endDate">End Date</label>
+            <input type="date" formControlName="endDate" (input)="inputChange()" [(ngModel)]="endDate" />
+            <div *ngIf=" f.endDate.errors " class="invalid-feedback ">
+                <div *ngIf="f.endDate.errors.required ">End Date is required</div>
+            </div>
         </div>
-        <div class="control-item">
-            <button>Reset Zoom</button>
-        </div>
-    </div>
-    <div class="chart-container">
-        <canvas baseChart [datasets]="barChartData" [labels]="barChartLabels" [options]="barChartOptions" [colors]="barChartColors" [legend]="barChartLegend" [chartType]="barChartType" [plugins]="barChartPlugins" (chartHover)="chartHovered($event)" (chartClick)="chartClicked($event)"></canvas>
+    </form>
+
+    <div class="chart-container ">
+        <canvas baseChart [datasets]="barChartData " [labels]="barChartLabels " [options]="barChartOptions " [colors]="barChartColors " [legend]="barChartLegend " [chartType]="barChartType " [plugins]="barChartPlugins " (chartHover)="chartHovered($event)
+                " (chartClick)="chartClicked($event) "></canvas>
     </div>
 </div>

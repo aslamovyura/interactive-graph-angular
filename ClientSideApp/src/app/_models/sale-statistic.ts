@@ -1,7 +1,7 @@
 export class SaleStatistic {
     startDate: Date;
     endDate: Date;
-    salesDate: string[];
+    salesDate: Date[];
     salesNumber: number[];
     salesSum: number[];
 }

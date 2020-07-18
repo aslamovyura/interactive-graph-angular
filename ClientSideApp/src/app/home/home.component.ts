@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { SalesService, AlertService } from '../_services';
 import { SaleStatistic } from '../_models';
 import { AppConstants } from '../_constants';
+import { DatePipe } from '@angular/common';
+import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
     selector: 'home-app',
@@ -12,12 +14,13 @@ import { AppConstants } from '../_constants';
 })
 export class HomeComponent implements OnInit {
 
-    startDate: Date;
-    endDate: Date;
-    scale: number;
+    @Input() startDate: Date;
+    @Input() endDate: Date;
+    @Input() scale: number;
     saleStatistic: SaleStatistic;
     isLoading: boolean;
     imgSrc: string;
+    controlsForm: FormGroup;
 
     // Array of different segments in chart
     barChartData: ChartDataSets[] = [
@@ -45,7 +48,7 @@ export class HomeComponent implements OnInit {
                 },
                 gridLines: {
                     drawTicks: false,
-                }
+                },
             }],
             yAxes: [
               {
@@ -55,10 +58,10 @@ export class HomeComponent implements OnInit {
                     display: true,
                     labelString: 'Sum (in Thousands)',
                 },
-                ticks: {
-                    max: Math.max(90), // add calculation here
-                    min: 0
-                },
+                // ticks: {
+                //     max: Math.max(90), // add calculation here
+                //     min: 0
+                // },
               },
               {
                 id: 'y-axis-sales',
@@ -70,21 +73,21 @@ export class HomeComponent implements OnInit {
                 gridLines: {
                   display: false,
                 },
-                ticks: {
-                    max: Math.max(100), // add calculation here
-                    min: 0
-                }
+                // ticks: {
+                //     max: Math.max(100), // add calculation here
+                //     min: 0
+                // }
               }
             ],
         },
         legend: {
-        display: true,
-        labels: {
-            // fontColor: 'rgb(255, 99, 132)'
-            fontSize: 11,
+            display: true,
+            labels: {
+                // fontColor: 'rgb(255, 99, 132)'
+                fontSize: 11,
+            },
+            position: "right"
         },
-        position: "right"
-        }
     };
     
     // Define colors of chart segments
@@ -112,47 +115,60 @@ export class HomeComponent implements OnInit {
     
     // events
     chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-        console.log(event, active);
+        // console.log(event, active);
     }
     
     chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-        console.log(event, active);
+        // console.log(event, active);
     }
 
 
     constructor(
         private salesService: SalesService,
         private alertService: AlertService,
+        private datePipe: DatePipe,
+        private formBuilder: FormBuilder,
     ) {
         this.startDate = new Date('2010-01-01');
-        this.endDate = new Date('2022-01-01');
-        this.scale = 0;
+        this.endDate = new Date('2022-01-01');;
+        this.scale = 1;
         this.saleStatistic = new SaleStatistic();
         this.isLoading = false;
         this.imgSrc = AppConstants.LOADING_GIF;
+
+        this.controlsForm = new FormGroup({
+            scale: new FormControl(),
+            startDate: new FormControl(),
+            endDate: new FormControl()
+         });
     }
 
     // Actions on initialization.
     ngOnInit(): void {
-        this.loadStatistic();
+        this.loadStatistics();
     }
 
     // Load sales statistics from the server.
-    loadStatistic(): void {
+    loadStatistics(): void {
 
         this.isLoading = true;
-
-        console.log('--->',this.scale, this.startDate, this.endDate);
         this.salesService.getStatistic(this.scale, this.startDate, this.endDate)
         .subscribe(
             data => {
-                console.log('statisctic:',data);
-                this.saleStatistic = data;
-                this.isLoading = false;
-                this.updateChart();
+                if (data.salesDate.length == 0){
+                    this.alertService.error(AppConstants.INCORRECT_PARAMETERS);
+                    this.isLoading = false;
+                }
+                else {
+                    this.saleStatistic = data;
+                    this.fillEditProfileForm();
+                    this.isLoading = false;
+                    this.updateChart();
+                }
             },
             error => {
                 this.saleStatistic = null;
+                this.fillEditProfileForm();
                 console.error(error);
                 this.alertService.error(AppConstants.CONNECTION_ISSUES);
                 this.isLoading = false;
@@ -162,10 +178,11 @@ export class HomeComponent implements OnInit {
 
     updateChart(): void {
         this.barChartData = [
+            // barThickness: 16, barPercentage: 100,
             { data: this.saleStatistic.salesSum, label: 'Sum $/K' },
             { data: this.saleStatistic.salesNumber, label: 'Sales', type:"line", lineTension:0, yAxisID: 'y-axis-sales' }
         ];
-        this.barChartLabels = this.saleStatistic.salesDate;
+        this.barChartLabels = this.convertDateToString(this.saleStatistic.salesDate);
 
         this.barChartOptions = {
             scales: {
@@ -177,12 +194,13 @@ export class HomeComponent implements OnInit {
                     },
                     ticks: {
                         autoSkip: true,
-                        autoSkipPadding: 100,
+                        maxTicksLimit: 5,
+                        maxRotation: 0,
                         padding: 10,
                     },
                     gridLines: {
                         drawTicks: false,
-                    }
+                    },
                 }],
                 yAxes: [
                   {
@@ -214,15 +232,64 @@ export class HomeComponent implements OnInit {
                 ],
             },
             legend: {
-            display: true,
-            labels: {
-                fontSize: 11,
+                display: true,
+                labels: {
+                    fontSize: 11,
+                },
+                position: "right"
             },
-            position: "right"
-            }
+            tooltips: {
+                mode: 'nearest',
+                position: 'nearest',
+                callbacks: {
+                    title: function(tooltipItem, data) {
+                        return null;
+                    },
+                    label: function(tooltipItem, data) {
+
+                        if(tooltipItem['datasetIndex'] == 0){
+                            return "Sales on "
+                            + data['labels'][tooltipItem['index']].toString() + ":  "
+                            + data['datasets'][0]['data'][tooltipItem['index']].toString() + '$';
+                        } 
+                        else {
+                            return "Sales on "
+                            + data['labels'][tooltipItem['index']].toString() + ":  "
+                            + data['datasets'][1]['data'][tooltipItem['index']].toString();
+                        }  
+                    },
+                },
+                backgroundColor: 'rgba(248, 136, 230, 0.2)',
+                bodyFontColor: 'black',
+                bodyFontSize: 12,
+                displayColors: false,
+              },
         };
     }
 
+    private convertDateToString(dates: Date[]) : string[] {
 
+        let strings = new Array<string>();
+        for (let date of dates){
+            strings.push(this.datePipe.transform(date, 'yyyy/MM/dd').toString());
+        }
+        return strings;
+    }
+
+    // Getter for easy access to controls form fields.
+    get f() { return this.controlsForm.controls; }
+
+    // Fill contols with initial data.
+    fillEditProfileForm() {
+        this.controlsForm = this.formBuilder.group({
+            scale:      [ this.scale, [Validators.required]],
+            startDate:  [ this.datePipe.transform(this.startDate, 'yyyy-MM-dd'), [Validators.required]],
+            endDate:    [ this.datePipe.transform(this.endDate, 'yyyy-MM-dd'), [Validators.required]],
+        });
+    }
     
+    inputChange(){
+        console.log('Parameters are changed!');
+        this.loadStatistics();
+    }
 }
