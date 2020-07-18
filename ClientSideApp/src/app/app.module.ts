@@ -3,6 +3,7 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { HttpClientModule }   from '@angular/common/http';
+import { DatePipe } from '@angular/common'
 import { ChartsModule } from 'ng2-charts';
 import { routing }   from './app.routing';
 
@@ -31,7 +32,7 @@ import { SalesComponent } from './sales/sales.component';
         NotFoundComponent
     ],
     providers: [
-        // Add services here.
+        [DatePipe]
     ],
     bootstrap: [ AppComponent ]
 })

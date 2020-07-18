@@ -1,14 +1,20 @@
 import { UrlConstants } from '../_constants';
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Sale } from '../_models';
+import { Sale, SaleStatistic } from '../_models';
+import { DatePipe } from '@angular/common';
 
 @Injectable({ providedIn: 'root'})
 export class SalesService {
     url: string;
+    statisticUrl: string;
 
-    constructor(private http: HttpClient) { 
+    constructor(
+        private http: HttpClient,
+        private datepipe: DatePipe,
+    ) { 
         this.url = UrlConstants.SALES_URL;
+        this.statisticUrl = UrlConstants.SALES_STATISTIC_URL;
     }
 
     getAll() {
@@ -31,5 +37,11 @@ export class SalesService {
 
     deleteById(id:number) {
         return this.http.delete<Sale>(`${this.url}/${id}`);
+    }
+
+    getStatistic(scale:number, startDate:Date, endDate:Date) {
+        let startDateString = this.datepipe.transform(startDate, 'yyyy-MM-dd');
+        let endDateString = this.datepipe.transform(endDate, 'yyyy-MM-dd');
+        return this.http.get<SaleStatistic>(`${this.statisticUrl}?scale=${scale}&startdate=${startDateString}&enddate=${endDateString}`);
     }
 }

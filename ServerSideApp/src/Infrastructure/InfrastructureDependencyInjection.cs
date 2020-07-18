@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using ServerSideApp.Application.Interfaces;
 using ServerSideApp.Infrastructure.Extensions;
+using ServerSideApp.Infrastructure.Persistence;
 using ServerSideApp.Infrastructure.Services;
 
 namespace ServerSideApp.Infrastructure
@@ -17,6 +18,8 @@ namespace ServerSideApp.Infrastructure
         /// <returns>Services.</returns>
         public static IServiceCollection AddInfrastructureServices(this IServiceCollection services)
         {
+            services.AddScoped<IApplicationDbContext>(provider => provider.GetService<ApplicationDbContext>());
+
             services.AddScoped<ISaleStatisticService, SaleStatisticService>();
             services.AddSwaggerService();
 

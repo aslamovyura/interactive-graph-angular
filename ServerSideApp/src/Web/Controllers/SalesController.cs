@@ -2,7 +2,6 @@
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json.Serialization;
 using ServerSideApp.Application.CQRS.Commans.Create;
 using ServerSideApp.Application.CQRS.Commans.Delete;
 using ServerSideApp.Application.CQRS.Commans.Update;
@@ -10,7 +9,6 @@ using ServerSideApp.Application.CQRS.Queries.Get;
 using ServerSideApp.Application.DTO;
 using ServerSideApp.Application.Enums;
 using ServerSideApp.Application.Interfaces;
-using ServerSideApp.Domain.Entities;
 using ServerSideApp.Web.Constants;
 using System;
 using System.Collections.Generic;
