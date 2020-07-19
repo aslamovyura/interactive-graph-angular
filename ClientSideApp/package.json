@@ -20,7 +20,8 @@
         "zone.js": "~0.10.3",
         "chart.js": "~2.8.0",
         "core-js": "^2.6.9",
-        "ng2-charts": "~2.3.2"
+        "ng2-charts": "~2.3.2",
+        "chartjs-plugin-zoom": "~0.7.7"
     },
     "devDependencies": {
         "@angular-devkit/build-angular": "~0.1000.0",
