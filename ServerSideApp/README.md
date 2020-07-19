@@ -17,12 +17,12 @@ Configure application by editing the following `appsettings.json` file in the `.
     "DockerConnection": "Server=sql_server;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123;"
   },
 
-  "InitialDbSeedEnable": false,
+  "InitialDbSeedEnable": true,
   "AllowedHosts": "*"
 }
 ```
 
-Database initial seed is disabled by default. To enable database seeding with initial sales data, set `InitialDbSeedEnable` to `true`.
+Database initial seed is ENABLED by default. To disable database seeding with initial sales data, set `InitialDbSeedEnable` to `false`.
 
 ### Run application
 
