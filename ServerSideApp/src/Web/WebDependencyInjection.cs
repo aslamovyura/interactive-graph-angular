@@ -5,6 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerSideApp.Application.Interfaces;
 using ServerSideApp.Infrastructure.Persistence;
+using System.Reflection;
 
 namespace ServerSideApp.Web
 {
@@ -31,7 +32,7 @@ namespace ServerSideApp.Web
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddControllers()
-                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssemblyContaining<IApplicationDbContext>());
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
             services.AddCors();
             services.AddHealthChecks();
