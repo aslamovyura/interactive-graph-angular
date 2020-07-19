@@ -7,6 +7,25 @@ The current service provides and API for managing sales (simple CRUD operations)
 
 ## Getting Started
 
+### Configuration
+
+Configure application by editing the following `appsettings.json` file in the `./Web` directory:
+```
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1,1433;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123",
+    "DockerConnection": "Server=sql_server;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123;"
+  },
+
+  "InitialDbSeedEnable": false,
+  "AllowedHosts": "*"
+}
+```
+
+Database initial seed is disabled by default. To enable database seeding with initial sales data, set `InitialDbSeedEnable` to `true`.
+
+### Run application
+
 To run the application, type the following commands from the app root directory:
 
 ```

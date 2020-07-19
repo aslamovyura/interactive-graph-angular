@@ -15,6 +15,21 @@ The application consists of the following 2 parts:
 
 ### 1. Server-side app
 
+To configure application, edit the following `appsettings.json` file in the `./Web` directory:
+```
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1,1433;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123",
+    "DockerConnection": "Server=sql_server;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123;"
+  },
+
+  "InitialDbSeedEnable": false,
+  "AllowedHosts": "*"
+}
+```
+
+Database seeding with initial data is DISABLED by default. To enable database seeding, set `InitialDbSeedEnable` to `true` in `appsettings.json`.
+
 To run the application, type the following commands from the `./ServerSideApp` directory:
 
 ```
