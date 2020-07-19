@@ -26,6 +26,16 @@
         public const string SeedSuccess = "The database is successfully seeded.";
 
         /// <summary>
+        /// Database seeding is disabled.
+        /// </summary>
+        public const string SeedDisabled = "Initial database seeding is disabled!";
+
+        /// <summary>
+        /// Database seeding is enabled.
+        /// </summary>
+        public const string SeedEnabled = "Initial database seeding is enabled!";
+
+        /// <summary>
         /// Web host is staring.
         /// </summary>
         public const string WebHostStarting = "Web host is starting.";

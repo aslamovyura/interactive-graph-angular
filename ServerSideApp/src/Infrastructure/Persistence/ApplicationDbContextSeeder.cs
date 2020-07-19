@@ -1,5 +1,6 @@
 ﻿using ServerSideApp.Domain.Entities;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,6 +11,15 @@ namespace ServerSideApp.Infrastructure.Persistence
     /// </summary>
     public class ApplicationDbContextSeeder
     {
+        const int START_YEAR = 2010;
+        const int END_YEAR = 2020;
+
+        const int SALES_PER_DAY_MIN = 0;
+        const int SALES_PER_DAY_MAX = 10;
+
+        const int SALE_AMOUNT_MIN = 1000;
+        const int SALE_AMOUNT_MAX = 10000;
+
         /// <summary>
         /// Fill database with test data.
         /// </summary>
@@ -19,33 +29,40 @@ namespace ServerSideApp.Infrastructure.Persistence
         {
             context = context ?? throw new ArgumentNullException(nameof(context));
 
-            // Add first test sale.
-            var sale1 = new Sale
+            if (context.Sales.Count() == 0)
             {
-                Date = DateTime.Parse("2020-01-01 10:00:00"),
-                Amount = 1000,
-            };
+                var sales = GenerateInitialSales();
+                await context.Sales.AddRangeAsync(sales);
+                await context.SaveChangesAsync();
+            }
+        }
 
-            var sale1Exist = context.Sales.FirstOrDefault(s => s.Date == sale1.Date && s.Amount == sale1.Amount);
-            if (sale1Exist == null)
+        private static ICollection<Sale> GenerateInitialSales()
+        {
+            var sales = new List<Sale>();
+            var rand = new Random();
+            for (int year = START_YEAR; year <= END_YEAR; year++)
             {
-                await context.Sales.AddAsync(sale1);
+                for (int month = 1; month <= 12; month ++)
+                {
+                    var daysInMonth = DateTime.DaysInMonth(year, month);
+                    for (int day = 1; day <= daysInMonth; day ++)
+                    {
+                        var salesOnDay = rand.Next(SALES_PER_DAY_MIN, SALES_PER_DAY_MAX);
+                        for (int count = 0; count < salesOnDay; count ++)
+                        {
+                            var sale = new Sale
+                            {
+                                Date = new DateTime(year, month, day),
+                                Amount = rand.Next(SALE_AMOUNT_MIN, SALE_AMOUNT_MAX),
+                            };
+                            sales.Add(sale);
+                        }
+                    }
+                }
             }
 
-            // Add second test sale.
-            var sale2 = new Sale
-            {
-                Date = DateTime.Parse("2020-02-01 10:00:00"),
-                Amount = 2500,
-            };
-
-            var sale2Exist = context.Sales.FirstOrDefault(s => s.Date == sale2.Date && s.Amount == sale2.Amount);
-            if (sale2Exist == null)
-            {
-                await context.Sales.AddAsync(sale2);
-            }
-
-            await context.SaveChangesAsync();
+            return sales;
         }
     }
 }

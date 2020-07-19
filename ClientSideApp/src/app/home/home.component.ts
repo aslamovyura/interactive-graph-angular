@@ -23,13 +23,10 @@ export class HomeComponent implements OnInit {
     controlsForm: FormGroup;
 
     // Array of different segments in chart
-    barChartData: ChartDataSets[] = [
-        { data: [65, 59, 80, 81, 56, 55, 40, 56, 55, 40], label: 'Sum $/K' },
-        { data: [28, 48, 40, 19, 86, 27, 90, 86, 27, 90], label: 'Sales', type:"line", lineTension:0, yAxisID: 'y-axis-sales'}
-    ];
+    barChartData: ChartDataSets[];
     
     //Labels shown on the x-axis
-    barChartLabels: Label[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'May', 'June', 'July'];
+    barChartLabels: Label[];
     
     // Define chart options
     barChartOptions: ChartOptions = {
@@ -58,10 +55,6 @@ export class HomeComponent implements OnInit {
                     display: true,
                     labelString: 'Sum (in Thousands)',
                 },
-                // ticks: {
-                //     max: Math.max(90), // add calculation here
-                //     min: 0
-                // },
               },
               {
                 id: 'y-axis-sales',
@@ -73,10 +66,6 @@ export class HomeComponent implements OnInit {
                 gridLines: {
                   display: false,
                 },
-                // ticks: {
-                //     max: Math.max(100), // add calculation here
-                //     min: 0
-                // }
               }
             ],
         },
@@ -87,7 +76,7 @@ export class HomeComponent implements OnInit {
                 fontSize: 11,
             },
             position: "right"
-        },
+        }
     };
     
     // Define colors of chart segments
