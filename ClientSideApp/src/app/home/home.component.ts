@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { SalesService, AlertService } from '../_services';
@@ -55,7 +55,7 @@ export class HomeComponent implements OnInit {
     constructor(
         private salesService: SalesService,
         private alertService: AlertService,
-        private datePipe: DatePipe,
+        private datepipe: DatePipe,
         private formBuilder: FormBuilder,
     ) {
         this.startDate = new Date('2010-01-01');
@@ -85,7 +85,7 @@ export class HomeComponent implements OnInit {
         .subscribe(
             data => {
                 if (data.salesDate.length == 0){
-                    this.alertService.error(AppConstants.NO_DATA_AVAILABLE);
+                    this.alertService.info(AppConstants.NO_DATA_FOUND);
                     this.isLoading = false;
                 }
                 else {
@@ -108,7 +108,7 @@ export class HomeComponent implements OnInit {
         let salesInThousands = this.convertToThousands(this.saleStatistic.salesSum);
 
         this.barChartData = [
-            { data: salesInThousands, label: 'Sum $/K' },
+            { data: salesInThousands, label: 'Sum $/K'},
             { data: this.saleStatistic.salesNumber, label: 'Sales', type:"line", lineTension:0, yAxisID: 'y-axis-sales' }
         ];
         this.barChartLabels = this.convertDateToString(this.saleStatistic.salesDate);
@@ -163,7 +163,7 @@ export class HomeComponent implements OnInit {
             legend: {
                 display: true,
                 labels: {
-                    fontSize: 11,
+                    fontSize: 12,
                 },
                 position: "right"
             },
@@ -188,9 +188,9 @@ export class HomeComponent implements OnInit {
                         }  
                     },
                 },
-                backgroundColor: 'rgba(248, 136, 230, 0.7)',
+                backgroundColor: 'rgba(255, 230, 255, 0.9)',
                 bodyFontColor: 'black',
-                bodyFontSize: 12,
+                bodyFontSize: 14,
                 displayColors: false,
             },
             plugins: {
@@ -212,7 +212,7 @@ export class HomeComponent implements OnInit {
     private convertDateToString(dates: Date[]) : string[] {
         let strings = new Array<string>();
         for (let date of dates){
-            strings.push(this.datePipe.transform(date, 'yyyy/MM/dd').toString());
+            strings.push(this.datepipe.transform(date, 'yyyy/MM/dd').toString());
         }
         return strings;
     }
@@ -233,8 +233,8 @@ export class HomeComponent implements OnInit {
     fillEditProfileForm() {
         this.controlsForm = this.formBuilder.group({
             scale:      [ this.scale, [Validators.required]],
-            startDate:  [ this.datePipe.transform(this.startDate, 'yyyy-MM-dd'), [Validators.required]],
-            endDate:    [ this.datePipe.transform(this.endDate, 'yyyy-MM-dd'), [Validators.required]],
+            startDate:  [ this.datepipe.transform(this.startDate, 'yyyy-MM-dd'), [Validators.required]],
+            endDate:    [ this.datepipe.transform(this.endDate, 'yyyy-MM-dd'), [Validators.required]],
         });
     }
     

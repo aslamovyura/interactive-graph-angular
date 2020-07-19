@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { Sale } from '../_models';
 import { SalesService, AlertService } from '../_services';
 import { AppConstants } from '../_constants/app-constants';
+import { DatePipe } from '@angular/common';
 
 @Component({
     selector: 'sales-app',
@@ -21,6 +22,7 @@ export class SalesComponent implements OnInit {
     constructor(
         private salesService: SalesService,
         private alertService: AlertService,
+        private datepipe: DatePipe,
     ) {
         this.sales = new Array<Sale>();
         this.isLoading = false;
@@ -41,6 +43,7 @@ export class SalesComponent implements OnInit {
         .subscribe(
             (data: Sale[]) => {
                 this.sales = data;
+                
                 this.isLoading = false;
             },
             error => {
@@ -55,8 +58,15 @@ export class SalesComponent implements OnInit {
 
     // Register new sale.
     addSale(): void {
+
+        const insert = (arr, index, newItem) => [
+            ...arr.slice(0, index),
+            newItem,
+            ...arr.slice(index)
+          ]
+
         this.editedSale = new Sale();
-        this.sales.push(this.editedSale);
+        this.sales = insert(this.sales, 0, this.editedSale); // add new sale to the top of the array.
         this.isNewSale = true;
     }
 
@@ -140,9 +150,13 @@ export class SalesComponent implements OnInit {
     cancel() {
         // If cancel while registering new sale, remove last sale. 
         if (this.isNewSale) {
-            this.sales.pop();
+            this.sales.splice(0, 1); // remove new sale from the top of the array.
             this.isNewSale = false;
         }
         this.editedSale = null;
+    }
+
+    convertDateToString(date: Date) : String {
+        return this.datepipe.transform(date, 'yyyy/MM/dd').toString();
     }
 }

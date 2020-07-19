@@ -30,7 +30,7 @@
 <!--Read-only template-->
 <ng-template #readOnlyTemplate let-idx="idx" let-sale="sale">
     <td>{{idx}}</td>
-    <td>{{sale.date}}</td>
+    <td>{{convertDateToString(sale.date)}}</td>
     <td>{{sale.amount}}</td>
     <td>
         <div>
