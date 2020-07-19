@@ -25,3 +25,14 @@ main {
     position: relative;
     padding-bottom: 55px;
 }
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.left {
+    justify-content: left;
+}

@@ -15,10 +15,10 @@ namespace ServerSideApp.Infrastructure.Persistence
         const int END_YEAR = 2020;
 
         const int SALES_PER_DAY_MIN = 0;
-        const int SALES_PER_DAY_MAX = 10;
+        const int SALES_PER_DAY_MAX = 5;
 
-        const int SALE_AMOUNT_MIN = 1000;
-        const int SALE_AMOUNT_MAX = 10000;
+        const int SALE_AMOUNT_MIN = 100;
+        const int SALE_AMOUNT_MAX = 50000;
 
         /// <summary>
         /// Fill database with test data.
@@ -41,7 +41,7 @@ namespace ServerSideApp.Infrastructure.Persistence
         {
             var sales = new List<Sale>();
             var rand = new Random();
-            for (int year = START_YEAR; year <= END_YEAR; year++)
+            for (int year = START_YEAR; year < END_YEAR; year++)
             {
                 for (int month = 1; month <= 12; month ++)
                 {

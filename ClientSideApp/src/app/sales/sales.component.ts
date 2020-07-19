@@ -50,6 +50,7 @@ export class SalesComponent implements OnInit {
                 this.isLoading = false;
             }
         );
+
     }
 
     // Register new sale.

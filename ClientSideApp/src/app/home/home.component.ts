@@ -72,7 +72,6 @@ export class HomeComponent implements OnInit {
         legend: {
             display: true,
             labels: {
-                // fontColor: 'rgb(255, 99, 132)'
                 fontSize: 11,
             },
             position: "right"
@@ -83,7 +82,7 @@ export class HomeComponent implements OnInit {
     barChartColors: Color[] = [
     
         { // blue
-        backgroundColor: 'rgba(45, 94, 185, 0.2)',
+        backgroundColor: 'rgba(50, 168, 197, 0.2)',
         borderColor: 'rgba(45, 94, 185, 0.5)',
         borderWidth: 1,
         },
@@ -103,14 +102,9 @@ export class HomeComponent implements OnInit {
     barChartPlugins = [];
     
     // events
-    chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {
-        // console.log(event, active);
-    }
+    chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {}
     
-    chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {
-        // console.log(event, active);
-    }
-
+    chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {}
 
     constructor(
         private salesService: SalesService,
@@ -119,8 +113,8 @@ export class HomeComponent implements OnInit {
         private formBuilder: FormBuilder,
     ) {
         this.startDate = new Date('2010-01-01');
-        this.endDate = new Date('2022-01-01');;
-        this.scale = 1;
+        this.endDate = new Date('2019-12-31');;
+        this.scale = 0; // Quarter
         this.saleStatistic = new SaleStatistic();
         this.isLoading = false;
         this.imgSrc = AppConstants.LOADING_GIF;
@@ -145,7 +139,7 @@ export class HomeComponent implements OnInit {
         .subscribe(
             data => {
                 if (data.salesDate.length == 0){
-                    this.alertService.error(AppConstants.INCORRECT_PARAMETERS);
+                    this.alertService.error(AppConstants.NO_DATA_AVAILABLE);
                     this.isLoading = false;
                 }
                 else {
@@ -158,17 +152,16 @@ export class HomeComponent implements OnInit {
             error => {
                 this.saleStatistic = null;
                 this.fillEditProfileForm();
-                console.error(error);
-                this.alertService.error(AppConstants.CONNECTION_ISSUES);
                 this.isLoading = false;
             }
         );
     }
 
     updateChart(): void {
+        let salesInThousands = this.convertToThousands(this.saleStatistic.salesSum);
+
         this.barChartData = [
-            // barThickness: 16, barPercentage: 100,
-            { data: this.saleStatistic.salesSum, label: 'Sum $/K' },
+            { data: salesInThousands, label: 'Sum $/K' },
             { data: this.saleStatistic.salesNumber, label: 'Sales', type:"line", lineTension:0, yAxisID: 'y-axis-sales' }
         ];
         this.barChartLabels = this.convertDateToString(this.saleStatistic.salesDate);
@@ -199,7 +192,7 @@ export class HomeComponent implements OnInit {
                         labelString: 'Sum (in Thousands)',
                     },
                     ticks: {
-                        max: Math.ceil(Math.max(...this.saleStatistic.salesSum)*1.1),
+                        max: Math.ceil(Math.max(...salesInThousands)*1.1),
                         min: 0
                     },
                   },
@@ -239,7 +232,7 @@ export class HomeComponent implements OnInit {
                         if(tooltipItem['datasetIndex'] == 0){
                             return "Sales on "
                             + data['labels'][tooltipItem['index']].toString() + ":  "
-                            + data['datasets'][0]['data'][tooltipItem['index']].toString() + '$';
+                            + data['datasets'][0]['data'][tooltipItem['index']].toString() + ' $/K';
                         } 
                         else {
                             return "Sales on "
@@ -248,7 +241,7 @@ export class HomeComponent implements OnInit {
                         }  
                     },
                 },
-                backgroundColor: 'rgba(248, 136, 230, 0.2)',
+                backgroundColor: 'rgba(248, 136, 230, 0.7)',
                 bodyFontColor: 'black',
                 bodyFontSize: 12,
                 displayColors: false,
@@ -257,12 +250,20 @@ export class HomeComponent implements OnInit {
     }
 
     private convertDateToString(dates: Date[]) : string[] {
-
         let strings = new Array<string>();
         for (let date of dates){
             strings.push(this.datePipe.transform(date, 'yyyy/MM/dd').toString());
         }
         return strings;
+    }
+
+    private convertToThousands(sales: number[]) : number[] {
+        let salesInThousands = new Array<number>();
+        for (let sum of sales)
+        {
+            salesInThousands.push(Math.round(sum/1000));
+        }
+        return salesInThousands;
     }
 
     // Getter for easy access to controls form fields.

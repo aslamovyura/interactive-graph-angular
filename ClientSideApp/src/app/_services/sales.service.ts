@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Sale, SaleStatistic } from '../_models';
 import { DatePipe } from '@angular/common';
+import { Observable } from 'rxjs';
 
 @Injectable({ providedIn: 'root'})
 export class SalesService {

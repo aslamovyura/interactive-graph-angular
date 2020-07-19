@@ -1,6 +1,6 @@
 <h1>Sales</h1>
-<div [ngStyle]="{ 'display': isLoading ? 'flex' : 'none' }">
-    <img class="pl-3" src={{imgSrc}} />
+<div [ngStyle]="{ 'display': isLoading ? 'block' : 'none' }">
+    <img class="center" src={{imgSrc}} />
 </div>
 <div [ngStyle]="{ 'visibility': isLoading ? 'hidden' : 'visible' }">
     <p *ngIf="sales == null || sales.length == 0">
