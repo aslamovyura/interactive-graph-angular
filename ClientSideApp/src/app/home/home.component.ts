@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
 import { ChartDataSets, ChartOptions } from 'chart.js';
 import { Label, Color } from 'ng2-charts';
 import { SalesService, AlertService } from '../_services';
@@ -14,68 +14,19 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 })
 export class HomeComponent implements OnInit {
 
-    @Input() startDate: Date;
-    @Input() endDate: Date;
-    @Input() scale: number;
+    startDate: Date;
+    endDate: Date;
+    scale: number;
     saleStatistic: SaleStatistic;
     isLoading: boolean;
     imgSrc: string;
     controlsForm: FormGroup;
 
-    // Array of different segments in chart
+    // Chart options 
     barChartData: ChartDataSets[];
-    
-    //Labels shown on the x-axis
     barChartLabels: Label[];
-    
-    // Define chart options
     barChartOptions: ChartOptions = {
         responsive: true,
-        scales: {
-            xAxes: [{
-                id: 'x-axis-time',
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Time'
-                },
-                ticks: {
-                    autoSkip: true,
-                    autoSkipPadding: 100,
-                    padding: 10,
-                },
-                gridLines: {
-                    drawTicks: false,
-                },
-            }],
-            yAxes: [
-              {
-                id: 'y-axis-sum',
-                position: 'left',
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Sum (in Thousands)',
-                },
-              },
-              {
-                id: 'y-axis-sales',
-                position: 'right',
-                scaleLabel: {
-                    display: true,
-                    labelString: 'Number',
-                },
-                gridLines: {
-                  display: false,
-                },
-              }
-            ],
-        },
-        legend: {
-            display: true,
-            labels: {
-                fontSize: 11,
-            },
-            position: "right"
-        }
     };
     
     // Define colors of chart segments
@@ -93,17 +44,12 @@ export class HomeComponent implements OnInit {
         }
     ];
 
-    // Set true to show legends
     barChartLegend = true;
-    
-    // Define type of chart
     barChartType = 'bar';
-    
     barChartPlugins = [];
     
-    // events
+    // Chart events.
     chartClicked({ event, active }: { event: MouseEvent, active: {}[] }): void {}
-    
     chartHovered({ event, active }: { event: MouseEvent, active: {}[] }): void {}
 
     constructor(
@@ -145,6 +91,7 @@ export class HomeComponent implements OnInit {
                 else {
                     this.saleStatistic = data;
                     this.fillEditProfileForm();
+                    this.alertService.clear();
                     this.isLoading = false;
                     this.updateChart();
                 }
@@ -245,7 +192,20 @@ export class HomeComponent implements OnInit {
                 bodyFontColor: 'black',
                 bodyFontSize: 12,
                 displayColors: false,
-              },
+            },
+            plugins: {
+                zoom: {
+                    pan: {
+                        enabled: true,
+                        mode: 'x',
+                    },
+                    zoom: {
+                        enabled: true,
+                        mode: 'x',
+                        sensitivity: 0,
+                    }
+            }
+          }, 
         };
     }
 
@@ -279,7 +239,10 @@ export class HomeComponent implements OnInit {
     }
     
     inputChange(){
-        console.log('Parameters are changed!');
         this.loadStatistics();
+    }
+
+    resetZoom(){
+        this.updateChart();
     }
 }

@@ -9,7 +9,7 @@ The current service provides and API for managing sales (simple CRUD operations)
 
 ### Configuration
 
-Configure application by editing the following `appsettings.json` file in the `./Web` directory:
+Configure application by editing the following `appsettings.json` file in the `./src/Web` directory:
 ```
 {
   "ConnectionStrings": {

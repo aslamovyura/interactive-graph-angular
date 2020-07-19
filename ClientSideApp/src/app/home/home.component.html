@@ -23,6 +23,9 @@
                 <div *ngIf="f.endDate.errors.required ">End Date is required</div>
             </div>
         </div>
+        <div class="control-item">
+            <button (click)="resetZoom()">Reset Zoom</button>
+        </div>
     </form>
 
     <div [ngStyle]="{ 'display': isLoading ? 'block' : 'none' }">

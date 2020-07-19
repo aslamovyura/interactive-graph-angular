@@ -16,7 +16,8 @@ To install required packages and run application, type the following command fro
 ## Built with
 
 - [Angular](https://angular.io/);
-- [Chart.js](https://www.chartjs.org/).
+- [Chart.js](https://www.chartjs.org/);
+- [chartjs-plugin-zoom](https://github.com/chartjs/chartjs-plugin-zoom).
 
 ## Author
 

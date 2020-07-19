@@ -66,7 +66,6 @@ export class SalesComponent implements OnInit {
         this.editedSale.id = sale.id;
         this.editedSale.date = sale.date;
         this.editedSale.amount = sale.amount;
-        console.log('Edited Sale:', this.editedSale);
     }
 
     // Delete sale.
@@ -90,9 +89,9 @@ export class SalesComponent implements OnInit {
     // Load appropriate template.
     loadTemplate(sale: Sale) {
         if (this.editedSale && this.editedSale.id === sale.id) {
-            console.log('edit load:', sale);
             return this.editTemplate;
-        } else {
+        } 
+        else {
             return this.readOnlyTemplate;
         }
     }
