@@ -54,6 +54,7 @@ namespace ServerSideApp.Application.CQRS.Queries.Get
             public async Task<IEnumerable<SaleDTO>> Handle(GetSalesByDateQuery request, CancellationToken cancellationToken)
             {
                 var entites = await _context.Sales.Where(s => s.Date >= request.StartDate && s.Date <= request.EndDate)
+                    .OrderBy(s => s.Date)
                     .ToArrayAsync(cancellationToken);
 
                 var sales = _mapper.Map<IEnumerable<SaleDTO>>(entites);

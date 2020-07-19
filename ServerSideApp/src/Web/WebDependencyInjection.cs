@@ -1,9 +1,11 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentValidation.AspNetCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using ServerSideApp.Application.Interfaces;
 using ServerSideApp.Infrastructure.Persistence;
+using System.Reflection;
 
 namespace ServerSideApp.Web
 {
@@ -29,11 +31,11 @@ namespace ServerSideApp.Web
             var connectionString = configuration.GetConnectionString(conntectionType);
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(connectionString));
 
-            services.AddScoped<IApplicationDbContext, ApplicationDbContext>();
-            services.AddControllers();
+            services.AddControllers()
+                .AddFluentValidation(fv => fv.RegisterValidatorsFromAssembly(Assembly.GetExecutingAssembly()));
 
-            services.AddHealthChecks();
             services.AddCors();
+            services.AddHealthChecks();
 
             return services;
         }

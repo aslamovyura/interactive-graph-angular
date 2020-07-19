@@ -1,7 +1,10 @@
 ﻿using AutoMapper;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using ServerSideApp.Application.Behaviors;
+using ServerSideApp.Application.DTO;
+using ServerSideApp.Application.Validators;
 using System;
 using System.Reflection;
 
@@ -24,6 +27,8 @@ namespace Application
             // Add mediatR and validation pipeline.
             services.AddMediatR(Assembly.GetExecutingAssembly());
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RequestValidationBehavior<,>));
+
+            services.AddTransient<IValidator<SaleDTO>, SaleDtoValidator>();
 
             return services;
         }

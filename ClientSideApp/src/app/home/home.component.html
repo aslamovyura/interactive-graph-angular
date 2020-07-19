@@ -1,3 +1,36 @@
 <div>
-    <h1>Interactive-Graph Service for sales statistics monitoring</h1>
+    <form [formGroup]="controlsForm" class="controls-container">
+        <div class="control-item">
+            <label for="scale">First Name</label>
+            <select formControlName="scale" (change)="inputChange()" [(ngModel)]="scale">
+                <option value="0">Quarter</option>
+                <option value="1">Month</option>
+                <option value="2">Week</option>
+                <option value="3">Day</option>
+            </select>
+        </div>
+        <div class="control-item">
+            <label for="startDate">Start Date</label>
+            <input type="date" formControlName="startDate" (input)="inputChange()" [(ngModel)]="startDate" />
+            <div *ngIf=" f.startDate.errors " class="invalid-feedback ">
+                <div *ngIf="f.startDate.errors.required ">Start Date is required</div>
+            </div>
+        </div>
+        <div class="control-item">
+            <label for="endDate">End Date</label>
+            <input type="date" formControlName="endDate" (input)="inputChange()" [(ngModel)]="endDate" />
+            <div *ngIf=" f.endDate.errors " class="invalid-feedback ">
+                <div *ngIf="f.endDate.errors.required ">End Date is required</div>
+            </div>
+        </div>
+    </form>
+
+    <div [ngStyle]="{ 'display': isLoading ? 'block' : 'none' }">
+        <img class="center" src={{imgSrc}} />
+    </div>
+
+    <div class="chart-container" [ngStyle]="{ 'display': isLoading ? 'none' : 'flex' }">
+        <canvas baseChart [datasets]="barChartData " [labels]="barChartLabels " [options]="barChartOptions " [colors]="barChartColors " [legend]="barChartLegend " [chartType]="barChartType " [plugins]="barChartPlugins " (chartHover)="chartHovered($event)
+                " (chartClick)="chartClicked($event) "></canvas>
+    </div>
 </div>

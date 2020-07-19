@@ -13,7 +13,7 @@ namespace ServerSideApp.Application.CQRS.Commans.Create
         public CreateSaleCommandValidator()
         {
             RuleFor(sale => sale.Model.Date).NotEmpty();
-            RuleFor(sale => sale.Model.Amount).NotEmpty().GreaterThan(0);
+            RuleFor(sale => sale.Model.Amount).GreaterThan(0).NotEmpty();
         }
     }
 }

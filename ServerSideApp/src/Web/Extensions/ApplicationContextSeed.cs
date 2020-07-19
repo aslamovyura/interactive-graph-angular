@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Serilog;
 using ServerSideApp.Infrastructure.Persistence;
@@ -18,8 +19,21 @@ namespace ServerSideApplication.Web.Extensions
         /// <param name="serviceProvider">Service provider.</param>
         public static void Initialize(IServiceProvider serviceProvider)
         {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json", optional: false)
+                .Build();
+
+            var initialDbSeedEnable = Convert.ToBoolean(configuration.GetSection("InitialDbSeedEnable").Value);
+            if (!initialDbSeedEnable)
+            {
+                Log.Information(InitializationConstants.SeedDisabled);
+                return;
+            }
+
             try
             {
+                Log.Information(InitializationConstants.SeedEnabled);
+
                 var contextOptions = serviceProvider.GetRequiredService<DbContextOptions<ApplicationDbContext>>();
 
                 using var applicationContext = new ApplicationDbContext(contextOptions);

@@ -1,5 +1,7 @@
 # Interactive Graph (client-side application)
 
+![Node.js](https://github.com/aslamovyura/interactive-graph-angular/workflows/Node.js%20CI/badge.svg)
+
 This is a front-end part of the application, that displays sales statistics in the form of interactive graph.
 
 ## Getting Started
@@ -10,6 +12,11 @@ To install required packages and run application, type the following command fro
 > npm install
 > npm start
 ```
+
+## Built with
+
+- [Angular](https://angular.io/);
+- [Chart.js](https://www.chartjs.org/).
 
 ## Author
 

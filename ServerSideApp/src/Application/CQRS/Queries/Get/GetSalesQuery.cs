@@ -5,6 +5,7 @@ using ServerSideApp.Application.DTO;
 using ServerSideApp.Application.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -42,7 +43,9 @@ namespace ServerSideApp.Application.CQRS.Queries.Get
             /// <returns>Number of sales DTO.</returns>
             public async Task<IEnumerable<SaleDTO>> Handle(GetSalesQuery request, CancellationToken cancellationToken)
             {
-                var entites = await _context.Sales.ToArrayAsync(cancellationToken);
+                var entites = await _context.Sales
+                    .OrderBy(s => s.Date)
+                    .ToArrayAsync(cancellationToken);
                 var sales = _mapper.Map<IEnumerable<SaleDTO>>(entites);
 
                 return sales;

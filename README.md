@@ -1,6 +1,7 @@
 # Interactive Graph
 
 ![.NET Core](https://github.com/aslamovyura/interactive-graph-angular/workflows/.NET%20Core/badge.svg)
+![Node.js](https://github.com/aslamovyura/interactive-graph-angular/workflows/Node.js%20CI/badge.svg)
 
 The main idea of application is to display sales statistics in the form of an interactive graph.
 The application consists of the following 2 parts:
@@ -14,6 +15,21 @@ The application consists of the following 2 parts:
 ## Getting Started
 
 ### 1. Server-side app
+
+To configure application, edit the following `appsettings.json` file in the `./Web` directory:
+```
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "Server=127.0.0.1,1433;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123",
+    "DockerConnection": "Server=sql_server;Database=SalesDb;User Id=sa;Password=reallyStrongPwd123;"
+  },
+
+  "InitialDbSeedEnable": true,
+  "AllowedHosts": "*"
+}
+```
+
+Database seeding with initial data is ENABLED by default. To disable database seeding, set `InitialDbSeedEnable` to `false` in `appsettings.json`.
 
 To run the application, type the following commands from the `./ServerSideApp` directory:
 
@@ -37,7 +53,8 @@ To install required packages and run the application, type the following command
 ## Built with
 
 - [ASP.NET Core 3.1](https://docs.microsoft.com/en-us/aspnet/core/);
-- [Amgular](https://angular.io/);
+- [Angular](https://angular.io/);
+- [Chart.js](https://www.chartjs.org/).
 - [Clean architecture](https://docs.microsoft.com/en-us/dotnet/architecture/modern-web-apps-azure/common-web-application-architectures);
 - [REST API](https://restfulapi.net/) with [Swagger](https://swagger.io/);
 - [CRUD](https://docs.microsoft.com/en-us/iis-administration/api/crud);

@@ -71,13 +71,15 @@ namespace ServerSideApp.Infrastructure.Services
                 var months = new int[] { 1, 4, 7, 10 };
 
                 // Group data by Quarter and calculate statistic.
-                var quarterSalesStatistic = yearGroup.GroupBy(item => ((item.Date.Month - 1) / 3))
-                        .Select(x => new
-                        {
-                            Quarter = x.Key,
-                            SalesNumber = x.Aggregate(0, (total, next) => total + 1),
-                            SalesSum = x.Sum(item => item.Amount),
-                        });
+                var quarterSalesStatistic = yearGroup
+                    .GroupBy(item => ((item.Date.Month - 1) / 3))
+                    .OrderBy(item => item.Key)
+                    .Select(x => new
+                    {
+                        Quarter = x.Key,
+                        SalesNumber = x.Aggregate(0, (total, next) => total + 1),
+                        SalesSum = x.Sum(item => item.Amount),
+                    });
 
                 // Add quarters without data to calculate statistic.
                 var fullQuarterSalesStatistic = (from quarter in Enumerable.Range(0, 4)
@@ -125,13 +127,15 @@ namespace ServerSideApp.Infrastructure.Services
                 var year = yearGroup.Key;
 
                 // Group data by Month and calculate statistic.
-                var monthSalesStatistic = yearGroup.GroupBy(item => item.Date.Month - 1)
-                        .Select(x => new
-                        {
-                            Month = x.Key,
-                            SalesNumber = x.Aggregate(0, (total, next) => total + 1),
-                            SalesSum = x.Sum(item => item.Amount),
-                        });
+                var monthSalesStatistic = yearGroup
+                    .GroupBy(item => item.Date.Month - 1)
+                    .OrderBy(item => item.Key)
+                    .Select(x => new
+                    {
+                        Month = x.Key,
+                        SalesNumber = x.Aggregate(0, (total, next) => total + 1),
+                        SalesSum = x.Sum(item => item.Amount),
+                    });
 
                 // Add months without data to calculate statistic.
                 var fullMonthSalesStatistic = (from month in Enumerable.Range(0, 12)
@@ -172,7 +176,6 @@ namespace ServerSideApp.Infrastructure.Services
                      d,
                      CalendarWeekRule.FirstFourDayWeek,
                      DayOfWeek.Monday);
-                     //DayOfWeek.Sunday);
 
             var saleStatistic = new SaleStatisticDTO { StartDate = startDate, EndDate = endDate };
 
@@ -275,14 +278,19 @@ namespace ServerSideApp.Infrastructure.Services
                 var year = yearGroup.Key;
                 var jan1 = new DateTime(year, 1, 1);
 
+                // test
+                var salesOrderedByDate = yearGroup.OrderBy(s => s.Date);
+
                 // Group data by Day and calculate statistic.
-                var daySalesStatistic = yearGroup.GroupBy(item => item.Date.Day - 1)
-                        .Select(x => new
-                        {
-                            Day = x.Key,
-                            SalesNumber = x.Aggregate(0, (total, next) => total + 1),
-                            SalesSum = x.Sum(item => item.Amount),
-                        });
+                var daySalesStatistic = yearGroup
+                    .GroupBy(item => item.Date.DayOfYear - 1)
+                    .OrderBy(item => item.Key)
+                    .Select(x => new
+                    {
+                        Day = x.Key,
+                        SalesNumber = x.Aggregate(0, (total, next) => total + 1),
+                        SalesSum = x.Sum(item => item.Amount),
+                    });
 
                 var daysNumber = DateTime.IsLeapYear(year) ? 366 : 365;
 
