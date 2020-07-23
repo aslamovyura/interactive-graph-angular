@@ -1,4 +1,5 @@
-import { NgModule }      from '@angular/core';
+import { NgModule } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS }   from '@angular/common/http';
@@ -14,6 +15,7 @@ import { SalesComponent } from './sales/sales.component';
 
 import { ErrorInterceptor } from './_helpers';
 
+
 @NgModule({
     imports: [
         BrowserModule,
@@ -21,7 +23,8 @@ import { ErrorInterceptor } from './_helpers';
         ReactiveFormsModule,
         ChartsModule,
         HttpClientModule,
-        routing
+        routing,
+        NgxPaginationModule
     ],
     declarations: [
         AppComponent,
@@ -30,7 +33,7 @@ import { ErrorInterceptor } from './_helpers';
         FooterComponent,
         HomeComponent,
         SalesComponent,
-        NotFoundComponent
+        NotFoundComponent,
     ],
     providers: [
         {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true}, // Catch HTTP errors.

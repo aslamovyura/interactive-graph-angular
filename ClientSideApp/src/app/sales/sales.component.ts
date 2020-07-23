@@ -19,6 +19,9 @@ export class SalesComponent implements OnInit {
     isLoading: boolean;
     imgSrc: string;
 
+    // Pagination controls
+    page: number = 1;
+
     constructor(
         private salesService: SalesService,
         private alertService: AlertService,

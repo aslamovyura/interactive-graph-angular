@@ -36,3 +36,8 @@ main {
 .left {
     justify-content: left;
 }
+
+.my-pagination /deep/ .ngx-pagination .current {
+    background: red;
+    margin: 0;
+}
